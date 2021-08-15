@@ -6,11 +6,13 @@ import (
 )
 
 func InitApiRoute(r *gin.Engine) {
-	r.GET("/user/add",api.ListUser)
-	r.GET("/talent/get",api.TalentInfo)
-
 	//时间api
-	r.POST("/time/timestamp",api.ToTimestamp)
-	r.GET("/time/now",api.Nowtime)
-	r.POST("/time/datetime",api.ToDatetime)
+	timeApi := r.Group("/time")
+	timeApi.POST("/timestamp",api.ToTimestamp)
+	timeApi.GET("/now",api.Nowtime)
+	timeApi.POST("/datetime",api.ToDatetime)
+
+	//微信授权接口
+	mpApi := r.Group("/account/")
+	mpApi.POST("wx-auth",api.MpAuth)
 }

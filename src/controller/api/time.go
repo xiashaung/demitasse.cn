@@ -20,6 +20,7 @@ func Nowtime(c *gin.Context)  {
 	lib.SuccessJson(c,gin.H{"time":time.Now().Unix()})
 }
 
+//
 func ToDatetime(c *gin.Context)  {
 	timestamp := c.PostForm("timestamp")
 	if timestamp == "" {

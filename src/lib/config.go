@@ -27,11 +27,17 @@ type redis struct {
 	password string
 }
 
+type mpConf struct {
+	AppId string
+	AppSecret string
+}
+
 var (
 	cfg *ini.File
 	Server server
 	Db db
-	Redis redis
+	RedisConf redis
+	MpConf mpConf
 )
 
 func init(){
@@ -44,6 +50,7 @@ func init(){
 	loadServer()
 	loadDb()
 	loadRedis()
+	loadMp()
 }
 
 func loadServer(){
@@ -65,9 +72,15 @@ func loadDb(){
 
 func loadRedis(){
 	sec := GetSection("redis")
-	Redis.Host = sec.Key("host").MustString("127.0.0.1")
-	Redis.Port = sec.Key("port").MustInt(6379)
-	Redis.password = sec.Key("password").MustString("")
+	RedisConf.Host = sec.Key("host").MustString("127.0.0.1")
+	RedisConf.Port = sec.Key("port").MustInt(6379)
+	RedisConf.password = sec.Key("password").MustString("")
+}
+
+func loadMp()  {
+	sec := GetSection("miniprogram")
+	MpConf.AppId = sec.Key("app_id").MustString("")
+	MpConf.AppSecret = sec.Key("app_secret").MustString("")
 }
 
 func loadApp(){

@@ -8,3 +8,7 @@ type TalentInfo struct {
 func (TalentInfo) TableName() string {
 	return "talent_info"
 }
+
+func (t *TalentInfo)GetName() string {
+	return t.TalentName
+}

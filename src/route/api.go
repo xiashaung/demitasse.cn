@@ -15,4 +15,6 @@ func InitApiRoute(r *gin.Engine) {
 	//微信授权接口
 	mpApi := r.Group("/account/")
 	mpApi.POST("wx-auth",api.MpAuth)
+
+	r.GET("/queue/producer",api.QueueProducer)
 }

@@ -9,6 +9,9 @@ import (
 type Queue struct {
 	 Channel *amqp.Channel
 	 Queue amqp.Queue
+	 ExchangeName string
+	 Queuekey string
+	 QueueName string
 	 Name string
 	 Callback interface{}
 }
@@ -34,11 +37,14 @@ func InitProducer(exchange string,queueName string,queueKey string)Queue  {
 	  _ = queue.Channel.ExchangeDeclare(exchange,"direct",true,false,false,true,nil)
 	  queue.Queue,_ = queue.Channel.QueueDeclare(queueName,true,false,false,true,nil)
 	  _ = queue.Channel.QueueBind(queueName,queueKey,exchange,false,nil)
+	  queue.QueueName = queueName
+	  queue.ExchangeName = exchange
+	  queue.Queuekey = queueKey
 	  return queue
 }
 
 func (q Queue)Send(msg string) {
-	q.Channel.Publish("test_exchange","test_key",true,false,amqp.Publishing{
+	q.Channel.Publish(q.ExchangeName,q.Queuekey,true,false,amqp.Publishing{
 		Timestamp: time.Now(),
 		DeliveryMode: amqp.Persistent,
 		ContentType: "text/plain",

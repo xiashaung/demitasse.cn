@@ -12,10 +12,9 @@ type Queue struct {
 	 ExchangeName string
 	 Queuekey string
 	 QueueName string
-	 Name string
-	 Callback interface{}
 }
 
+//消费函数
 type consumerHandle func(string)int
 
 var (
@@ -43,6 +42,7 @@ func InitProducer(exchange string,queueName string,queueKey string)Queue  {
 	  return queue
 }
 
+//发送消息
 func (q Queue)Send(msg string) {
 	q.Channel.Publish(q.ExchangeName,q.Queuekey,true,false,amqp.Publishing{
 		Timestamp: time.Now(),
